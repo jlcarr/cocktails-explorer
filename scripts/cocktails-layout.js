@@ -4,10 +4,23 @@ var recipe_data = null;
 var ingredient_data = null;
 var recipe_graph = null;
 
+var simulation = null;
 
 function layout(){
 	fetchIBADataset()
 	.then(layout_graph);
+}
+
+function layoutStyle(radial){
+	if (radial){
+		var svg_handle = d3.select("svg");
+		var width = parseInt(svg_handle.attr("width"));
+		var height =  parseInt(svg_handle.attr("height"));
+		simulation.force("radial", d3.forceRadial( n => n.type == "drink"? 500 : 100, width / 2, height / 2).strength(1.0));
+	}
+	else
+		simulation.force("radial", null);
+	simulation.alphaTarget(0.3).restart();
 }
 
 function layout_graph(){
@@ -17,11 +30,12 @@ function layout_graph(){
 	var width = parseInt(svg_handle.attr("width"));
 	var height =  parseInt(svg_handle.attr("height"));
 	
-	var simulation = d3.forceSimulation()
+	simulation = d3.forceSimulation()
 		.force("link", d3.forceLink().id(d => d.id))
 		.force("charge", d3.forceManyBody())
 		.force("center", d3.forceCenter(width / 2, height / 2));
-	
+	//simulation.force("collision", d3.forceCollide(20));
+
 	// Set up the graph in D3
 	var link = svg_handle.append("g")
 		.attr("class", "links")
