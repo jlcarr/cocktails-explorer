@@ -6,3 +6,4 @@ An HTML, JavaScript and SVG project using D3 to explore the IBA official cocktai
 - https://iba-world.com/iba-official-cocktail-list/
 - Dataset: https://github.com/teijo/iba-cocktails
 - D3 Force-Direct Graph Example: https://bl.ocks.org/heybignick/3faf257bbbbc7743bb72310d03b86ee8
+- D3 Force-Directed Graph documentation: https://github.com/d3/d3-force
