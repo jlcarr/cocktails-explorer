@@ -4,13 +4,18 @@
 	<head>
 		<title>Cocktails</title>
 		<script src="https://d3js.org/d3.v5.min.js"></script>
-		<script src="scripts/cocktails-layout.js"></script>
+		<script src="scripts/cocktails-data.js"></script>
+		<script src="scripts/bipartite-layout.js"></script>
+		<script src="scripts/bubble-layout.js"></script>
 		<link rel="stylesheet" href="scripts/graph-style.css">
 	</head>
 	<body onload="layout();">
-		<svg id="main-img" width="1000" height="1000"></svg>
+		<h2>Bubble Graph</h2>
+		<svg id="bubble-img" width="1000" height="1000"></svg>
+		<h2>Bipartite Graph</h2>
+		<svg id="bipartite-img" width="1000" height="1000"></svg>
 		<br>
-		<input id="layout-type" type="checkbox" onclick="layoutStyle(this.checked);">
+		<input id="layout-type" type="checkbox" onclick="bipartiteLayoutStyle(this.checked);">
 		<label for="layout-type">Use radial layout</label>
 	</body>
 </html>
