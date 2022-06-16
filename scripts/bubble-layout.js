@@ -1,9 +1,11 @@
 // Force-directed graph map of IBA official cocktails
 
 var bubble_simulation = null;
-var radius = 200;
+var radius = 100;
 
-alcohol_colors = {'Gin':'red', 'Vodka':'blue', 'Whiskey':'yellow', 'White rum':'green', 'Triple Sec': 'orange', 'Tequila':'brown', 'Cognac':'violet'};
+// alcohol_colors = {'Gin':'red', 'Vodka':'blue', 'Whiskey':'yellow', 'White rum':'green', 'Triple Sec': 'orange', 'Tequila':'brown', 'Cognac':'violet'};
+// alcohol_colors.hasOwnProperty(n.primary_alcohol) ? alcohol_colors[n.primary_alcohol] : 'lightblue'
+var color = d3.scaleOrdinal(d3.schemePaired);
 
 function bubble_layout_graph(){
 	console.log(bubble_recipe_graph);
@@ -14,7 +16,7 @@ function bubble_layout_graph(){
 	bubble_simulation = d3.forceSimulation()
 		.force("link", d3.forceLink().id(d => d.id))
 		.force("center", d3.forceCenter(width / 2, height / 2))
-		.force("collision", d3.forceCollide(n => n.type == "drink" ? radius * n.abv : 0));
+		//.force("charge", d3.forceManyBody().strength(0.00001));
 
 	// Set up the graph in D3
 	var link = svg_handle.append("g")
@@ -32,17 +34,41 @@ function bubble_layout_graph(){
 		.enter().append("g");
 
 	var circles = node.append("circle")
-		.attr("r", n => n.type == "drink" ? radius * n.abv : 0)
-		.attr("fill", n => alcohol_colors.hasOwnProperty(n.primary_alcohol) ? alcohol_colors[n.primary_alcohol] : 'lightblue')
+		.attr("r", n => n.type == "drink" ? radius * Math.sqrt(n.abv) : 25)
+		.attr("fill", n => color(n.primary_alcohol))
+		.attr("visibility", n => n.type == "drink" ? "visible" : "hidden");
+		
+		
+	var clips = node.append("clipPath")
+		.attr('id', n => "clipping-"+n.id.replace(/[\W_]+/g, '-'))
+		.append("circle")
+		.attr("r", n => n.type == "drink" ? radius * Math.sqrt(n.abv) : 25)
+	var images = node.append("image")
+		.attr('opacity', 0.3)
+		.attr('href', "https://www.thecocktaildb.com/images/media/drink/rptuxy1472669372.jpg")
+		.attr('x', n => n.type == "drink" ? -radius * Math.sqrt(n.abv) : -25)
+		.attr('y', n => n.type == "drink" ? -radius * Math.sqrt(n.abv) : -25)
+		.attr('height', n => n.type == "drink" ? 2*radius * Math.sqrt(n.abv) : 25)
+		.attr('width', n => n.type == "drink" ? 2*radius * Math.sqrt(n.abv) : 25)
+		.attr('clip-path', n => "url(#clipping-"+ n.id.replace(/[\W_]+/g, '-') +")")
 		.attr("visibility", n => n.type == "drink" ? "visible" : "hidden");
 
+	var node_text = svg_handle.append("g")
+		.attr("class", "nodes")
+		.selectAll("g")
+		.data(bubble_recipe_graph.nodes)
+		.enter().append("g");
 
-	var lables = node.append("text")
-		.text(n => n.type == "drink" ? n.id: "")
-		.attr('text-anchor', "middle");
-
-	node.append("title")
-		.text(n => n.id);
+	var lable_shadow = node_text.append("text")
+		.text(n => n.id)
+		.attr('text-anchor', "middle")
+		.attr('style', "stroke: white; stroke-width: 4; stroke-linejoin : round; opacity: 0.9;")
+		.attr("visibility", n => n.type == "drink" ? "visible" : "hidden");
+	var lables = node_text.append("text")
+		.text(n => n.id)
+		.attr('text-anchor', "middle")
+		.attr('style', "opacity: 1.0;")
+		.attr("visibility", n => n.type == "drink" ? "visible" : "hidden");
 
 	bubble_simulation
 		.nodes(bubble_recipe_graph.nodes)
@@ -50,7 +76,7 @@ function bubble_layout_graph(){
 
 	bubble_simulation.force("link")
 		.links(bubble_recipe_graph.links)
-		.strength(l => l.value);
+		.strength(l => l.value); // + (l.source.primary_alchol == l.target.id)
 
 	function ticked() {
 		link
@@ -60,27 +86,28 @@ function bubble_layout_graph(){
 			.attr("y2", l => l.target.y);
 		node
 			.attr("transform", n => "translate("+ n.x + "," + n.y + ")");
+		node_text
+			.attr("transform", n => "translate("+ n.x + "," + n.y + ")");
 	}
+	
+	bubble_simulation.force("collision", d3.forceCollide(n => n.type == "drink" ? radius * Math.sqrt(n.abv) : 0).iterations(1));
+	
+	
+	bubble_simulation.on('end', () => {
+		bubble_simulation.on('end',null);
+		console.log('First simulation done');
+		
+		bubble_simulation.force("collision", d3.forceCollide(n => n.type == "drink" ? 1+radius * Math.sqrt(n.abv) : 0).iterations(2));
+		
+		/*
+		bubble_recipe_graph.nodes.forEach(n => {
+			n.x = Math.max(0, Math.min(width, n.x));
+			n.y = Math.max(0, Math.min(height, n.y));
+		});
+		*/
+		
+		bubble_simulation.alpha(0.3).restart();
+		//console.log(bubble_simulation.alpha())
+	});
 
-
-	// drag
-	function dragstarted(d) {
-		if (!d3.event.active) bubble_simulation.alphaTarget(0.3).restart();
-		d.fx = d.x;
-		d.fy = d.y;
-	}
-	function dragged(d) {
-		d.fx = d3.event.x;
-		d.fy = d3.event.y;
-	}
-	function dragended(d) {
-		if (!d3.event.active) bubble_simulation.alphaTarget(0);
-		d.fx = null;
-		d.fy = null;
-	}
-	var drag_handler = d3.drag()
-		.on("start", dragstarted)
-		.on("drag", dragged)
-		.on("end", dragended);
-	drag_handler(node);
 }
