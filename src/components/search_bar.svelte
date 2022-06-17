@@ -13,7 +13,7 @@ const filterIngredients = () => {
 	let storageArr = []
 	if (inputValue) {
 		ingredients.forEach(ingredient => {
-			 if (ingredient.toLowerCase().startsWith(inputValue.toLowerCase())) {
+			 if (ingredient.toLowerCase().includes(inputValue.toLowerCase())) {
 				 storageArr = [...storageArr, makeMatchBold(ingredient)];
 			 }
 		});
@@ -51,9 +51,8 @@ const searchedValue = () => {
 }
 
 const makeMatchBold = (str) => {
-	let matched = str.substring(0, inputValue.length);
-	let makeBold = `<strong>${matched}</strong>`;
-	let boldedMatch = str.replace(matched, makeBold);
+	let makeBold = `<strong>${str}</strong>`;
+	let boldedMatch = str.replace(str, makeBold);
 	return boldedMatch;
 }
 
