@@ -15,7 +15,7 @@ function bubble_layout_graph(){
 	
 	bubble_simulation = d3.forceSimulation()
 		.force("link", d3.forceLink().id(d => d.id))
-		.force("center", d3.forceCenter(width / 2, height / 2))
+		.force("center", d3.forceCenter(width / 2, height / 2));
 		//.force("charge", d3.forceManyBody().strength(0.00001));
 
 	// Set up the graph in D3
@@ -99,6 +99,9 @@ function bubble_layout_graph(){
 		
 		bubble_simulation.force("collision", d3.forceCollide(n => n.type == "drink" ? 1+radius * Math.sqrt(n.abv) : 0).iterations(2));
 		
+		//bubble_simulation.force("charge", d3.forceManyBody().strength(30));
+		//bubble_simulation.force("center", null);
+		
 		/*
 		bubble_recipe_graph.nodes.forEach(n => {
 			n.x = Math.max(0, Math.min(width, n.x));
@@ -108,6 +111,11 @@ function bubble_layout_graph(){
 		
 		bubble_simulation.alpha(0.3).restart();
 		//console.log(bubble_simulation.alpha())
+		
+		bubble_simulation.on('end', () => {
+			bubble_simulation.on('end',null);
+			bubble_simulation.alpha(0.3).restart();
+		});
 	});
 
 }
