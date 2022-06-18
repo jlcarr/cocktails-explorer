@@ -64,6 +64,7 @@ function bubbleLayoutGraph(){
 		.selectAll("g")
 		.data(bubble_graph.nodes)
 		.enter().append("g");
+	node.attr("opacity", 1.0);
 
 	var circles = node.append("circle")
 		.attr("r", n => n.type == "drink" ? radius * Math.sqrt(n.abv) : 25)
@@ -86,10 +87,11 @@ function bubbleLayoutGraph(){
 		.attr("visibility", n => n.type == "drink" ? "visible" : ingredients_visibility);
 
 	var node_text = svg_handle.append("g")
-		.attr("class", "nodes")
+		.attr("class", "nodestext")
 		.selectAll("g")
 		.data(bubble_graph.nodes)
 		.enter().append("g");
+	node_text.attr("opacity", 1.0);
 
 	var lable_shadow = node_text.append("text")
 		.text(n => n.id)
@@ -155,4 +157,25 @@ function bubbleLayoutGraph(){
 		});
 	});
 
+}
+
+
+function similarityOpacity(recipe_name){
+	var recipe = cocktail_data.recipes[recipe_index_map[recipe_name]];
+	var recipe_similarity_map = {};
+	recipe_similarity_map[recipe_name] = 1.0;
+	recipe.insights.similar_recipes.forEach( other_recipe => {
+		recipe_similarity_map[other_recipe.name] = other_recipe.similarity;
+	});
+	
+	d3.select("g.nodes")
+		.selectAll("g")
+		.transition()
+		.duration(500)
+		.attr("opacity", n => !!recipe_similarity_map[n.id] ? recipe_similarity_map[n.id] : 0);
+	d3.select("g.nodestext")
+		.selectAll("g")
+		.transition()
+		.duration(500)
+		.attr("opacity", n => !!recipe_similarity_map[n.id] ? recipe_similarity_map[n.id] : 0);
 }
