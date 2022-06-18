@@ -19,6 +19,10 @@
 
     function imageClickfromSVG(e){CurrentSearchTerm.update(n => e.id)}
 
+    function swapCursor(type){
+        d3.select(el).style("cursor", type);
+    }
+
     function bubble_layout_graph(){
         var svg_handle = d3.select(el)
 
@@ -42,7 +46,12 @@
             .attr("class", "nodes")
             .selectAll("g")
             .data(graph_nodes)
-            .enter().append("g").on("click", imageClickfromSVG);
+            .enter()
+            .append("g")
+            .on("click", imageClickfromSVG)
+            .on("mouseover", function(d){swapCursor('pointer')})
+            .on("mouseout", function(d){swapCursor('default')})
+
 
         var circles = node.append("circle")
             .attr("r", n => n.type == "drink" ? radius * Math.sqrt(n.abv) : 25)
@@ -69,7 +78,10 @@
             .attr("class", "nodes")
             .selectAll("g")
             .data(graph_nodes)
-            .enter().append("g").on("click", imageClickfromSVG);
+            .enter().append("g")
+            .on("click", imageClickfromSVG)
+            .on("mouseover", function(d){swapCursor('pointer')})
+            .on("mouseout", function(d){swapCursor('default')});
 
         var lable_shadow = node_text.append("text")
             .text(n => n.id)
