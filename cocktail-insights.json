@@ -8766,7 +8766,7 @@
         {
             "name": "Absinthe",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Absinthe-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Absinthe-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -8785,7 +8785,7 @@
         {
             "name": "Aperol",
             "abv": 0.11,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Aperol-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Aperol-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -8804,7 +8804,7 @@
         {
             "name": "Apricot brandy",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Apricot Brandy-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Apricot Brandy-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -8862,7 +8862,7 @@
         {
             "name": "Cachaca",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Cachaca-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Cachaca-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -8876,7 +8876,7 @@
         {
             "name": "Calvados",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Calvados-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Calvados-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -8899,7 +8899,7 @@
         {
             "name": "Campari",
             "abv": 0.25,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Campari-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Campari-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -8926,7 +8926,7 @@
         {
             "name": "Champagne",
             "abv": 0.12,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Champagne-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Champagne-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -8965,7 +8965,7 @@
         {
             "name": "Cherry liqueur",
             "abv": 0.3,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Cherry Liqueur-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Cherry Liqueur-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9036,7 +9036,7 @@
         {
             "name": "Coconut milk",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Coconut Milk-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Coconut Milk-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9059,7 +9059,7 @@
         {
             "name": "Coffee liqueur",
             "abv": 0.2,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Coffee Liqueur-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Coffee Liqueur-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9094,7 +9094,7 @@
         {
             "name": "Cognac",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Cognac-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Cognac-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9185,7 +9185,7 @@
         {
             "name": "Cola",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Cola-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Cola-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9208,7 +9208,7 @@
         {
             "name": "Cranberry juice",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Cranberry Juice-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Cranberry Juice-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9255,7 +9255,7 @@
         {
             "name": "Cream",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Cream-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Cream-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9447,7 +9447,7 @@
         {
             "name": "Dark rum",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Dark Rum-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Dark Rum-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9545,7 +9545,7 @@
         {
             "name": "Drambuie",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Drambuie-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Drambuie-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9583,7 +9583,7 @@
         {
             "name": "Egg yolk",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Egg Yolk-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Egg Yolk-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9606,7 +9606,7 @@
         {
             "name": "Galliano",
             "abv": 0.3,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Galliano-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Galliano-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9665,7 +9665,7 @@
         {
             "name": "Gin",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Gin-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Gin-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9836,7 +9836,7 @@
         {
             "name": "Ginger Ale",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Ginger Ale-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Ginger Ale-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9855,7 +9855,7 @@
         {
             "name": "Ginger beer",
             "abv": 0.05,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Ginger Beer-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Ginger Beer-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9886,7 +9886,7 @@
         {
             "name": "Grapefruit juice",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Grapefruit Juice-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Grapefruit Juice-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9948,7 +9948,7 @@
         {
             "name": "Kirsch",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Kirschwasser-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Kirschwasser-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -9967,7 +9967,7 @@
         {
             "name": "Lemon juice",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Lemon Juice-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Lemon Juice-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -10157,7 +10157,7 @@
         {
             "name": "Lime juice",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Lime Juice-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Lime Juice-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -10327,7 +10327,7 @@
         {
             "name": "Orange Bitters",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Orange Bitters-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Orange Bitters-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -10354,7 +10354,7 @@
         {
             "name": "Orange juice",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Orange Juice-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Orange Juice-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -10488,7 +10488,7 @@
         {
             "name": "Peach schnapps",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Peach Schnapps-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Peach Schnapps-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -10515,7 +10515,7 @@
         {
             "name": "Pineapple juice",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Pineapple Juice-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Pineapple Juice-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -10606,7 +10606,7 @@
         {
             "name": "Pisco",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Pisco-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Pisco-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -10629,7 +10629,7 @@
         {
             "name": "Prosecco",
             "abv": 0.12,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Prosecco-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Prosecco-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -10656,7 +10656,7 @@
         {
             "name": "Raspberry liqueur",
             "abv": 0.2,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Raspberry Liqueur-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Raspberry Liqueur-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -10702,7 +10702,7 @@
         {
             "name": "Soda water",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Soda Water-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Soda Water-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -10880,7 +10880,7 @@
         {
             "name": "Tequila",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Tequila-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Tequila-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -10947,7 +10947,7 @@
         {
             "name": "Tomato juice",
             "abv": 0.0,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Tomato Juice-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Tomato Juice-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -10986,7 +10986,7 @@
         {
             "name": "Triple Sec",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Triple Sec-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Triple Sec-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -11121,7 +11121,7 @@
         {
             "name": "Vermouth",
             "abv": 0.17,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Vermouth-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Vermouth-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -11184,7 +11184,7 @@
         {
             "name": "Vodka",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Vodka-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Vodka-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -11351,7 +11351,7 @@
         {
             "name": "Whiskey",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/Whiskey-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/Whiskey-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
@@ -11418,7 +11418,7 @@
         {
             "name": "White rum",
             "abv": 0.4,
-            "image_url": "www.thecocktaildb.com/images/ingredients/White Rum-Small.png",
+            "image_url": "https://www.thecocktaildb.com/images/ingredients/White Rum-Small.png",
             "insights": {
                 "recipe_usage": [
                     {
