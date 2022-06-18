@@ -63,8 +63,10 @@ function bubbleLayoutGraph(){
 		.attr("class", "nodes")
 		.selectAll("g")
 		.data(bubble_graph.nodes)
-		.enter().append("g");
-	node.attr("opacity", 1.0);
+		.enter().append("g")
+		.attr("opacity", 1.0)
+		//.on("mouseover", mouseover)
+		//.on("mouseout", mouseout);
 
 	var circles = node.append("circle")
 		.attr("r", n => n.type == "drink" ? radius * Math.sqrt(n.abv) : 25)
@@ -87,11 +89,13 @@ function bubbleLayoutGraph(){
 		.attr("visibility", n => n.type == "drink" ? "visible" : ingredients_visibility);
 
 	var node_text = svg_handle.append("g")
-		.attr("class", "nodestext")
+		.attr("class", "nodes-text")
 		.selectAll("g")
 		.data(bubble_graph.nodes)
-		.enter().append("g");
-	node_text.attr("opacity", 1.0);
+		.enter().append("g")
+		.attr("opacity", 1.0)
+		//.on("mouseover", mouseover)
+		//.on("mouseout", mouseout);
 
 	var lable_shadow = node_text.append("text")
 		.text(n => n.id)
@@ -103,6 +107,13 @@ function bubbleLayoutGraph(){
 		.attr('text-anchor', "middle")
 		//.attr('style', "opacity: 1.0;")
 		.attr("visibility", n => n.type == "drink" ? "visible" : ingredients_visibility);
+
+	function mouseover(d,i){
+		similarityOpacity(d.id);
+	}
+	function mouseout(d,i){
+		resetOpacity();
+	}
 
 
 	// Set up simulation
@@ -170,12 +181,25 @@ function similarityOpacity(recipe_name){
 	
 	d3.select("g.nodes")
 		.selectAll("g")
-		.transition()
-		.duration(500)
+		//.transition()
+		//.duration(500)
 		.attr("opacity", n => !!recipe_similarity_map[n.id] ? recipe_similarity_map[n.id] : 0);
-	d3.select("g.nodestext")
+	d3.select("g.nodes-text")
 		.selectAll("g")
-		.transition()
-		.duration(500)
+		//.transition()
+		//.duration(500)
 		.attr("opacity", n => !!recipe_similarity_map[n.id] ? recipe_similarity_map[n.id] : 0);
+}
+
+function resetOpacity(){
+	d3.select("g.nodes")
+		.selectAll("g")
+		//.transition()
+		//.duration(500)
+		.attr("opacity", 1.0);
+	d3.select("g.nodes-text")
+		.selectAll("g")
+		//.transition()
+		//.duration(500)
+		.attr("opacity", 1.0);
 }
