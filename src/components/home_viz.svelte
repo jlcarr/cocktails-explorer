@@ -1,85 +1,94 @@
 <script>
     import { onMount } from 'svelte';
     import * as d3 from 'd3';
-    var recipe_data = null;
-    var ingredient_data = null;
-    var recipe_graph = null;
+    import {CurrentGraph} from '../stores'
+    import {CurrentSearchTerm} from '../stores'
 
-    var simulation = null;
-    let svg;
-    onMount(() => {
-		layout();
+    export let graph_links = []
+    export let graph_nodes = []
 
-	})
+    let el;
 
-     function layout(){
-        fetchIBADataset()
-        .then(layout_graph);
-    }
+    var bubble_simulation = null;
+    var radius = 100;
+
+    // alcohol_colors = {'Gin':'red', 'Vodka':'blue', 'Whiskey':'yellow', 'White rum':'green', 'Triple Sec': 'orange', 'Tequila':'brown', 'Cognac':'violet'};
+    // alcohol_colors.hasOwnProperty(n.primary_alcohol) ? alcohol_colors[n.primary_alcohol] : 'lightblue'
+    var color = d3.scaleOrdinal(d3.schemePaired);
 
 
-    function layoutStyle(radial){
-        if (radial){
-            var svg_handle = d3.select(svg);
-            var width = parseInt(svg_handle.attr("width"));
-            var height =  parseInt(svg_handle.attr("height"));
-            simulation.force("radial", d3.forceRadial( n => n.type == "drink"? 500 : 100, width / 2, height / 2).strength(1.0));
-        }
-        else
-            simulation.force("radial", null);
-        simulation.alphaTarget(0.3).restart();
-    }
+    function imageClickfromSVG(e){CurrentSearchTerm.update(n => e.id)}
 
-    function layout_graph(){
-        filterOnlyAlcohol();
-        var svg_handle = d3.select(svg);
-        svg_handle.attr("height", "80vh")
-        svg_handle.attr("align","center");
+    function bubble_layout_graph(){
+        var svg_handle = d3.select(el)
 
-        var width = parseInt(svg_handle.attr("width"));
-        var height =  parseInt(svg_handle.attr("height"));
+        var width = '600'
+        var height =  '600'
 
-        simulation = d3.forceSimulation()
+        bubble_simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(d => d.id))
-            .force("charge", d3.forceManyBody())
             .force("center", d3.forceCenter(width / 2, height / 2));
-        //simulation.force("collision", d3.forceCollide(20));
 
         // Set up the graph in D3
         var link = svg_handle.append("g")
             .attr("class", "links")
             .selectAll("line")
-            .data(recipe_graph.links)
+            .data(graph_links)
             .enter().append("line")
-            .attr("stroke-width", l => l.value/2)
-            .style('stroke', '#999')
-            .style('stroke-opacity', '0.6')
+            .attr("stroke-width", l => l.value)
+            .attr("visibility", "hidden");
 
         var node = svg_handle.append("g")
             .attr("class", "nodes")
             .selectAll("g")
-            .data(recipe_graph.nodes)
-            .enter().append("g");
+            .data(graph_nodes)
+            .enter().append("g").on("click", imageClickfromSVG);
 
         var circles = node.append("circle")
-            .attr("r", 5)
-            .attr("fill", n => n.type == "drink" ? "blue": "orange");
+            .attr("r", n => n.type == "drink" ? radius * Math.sqrt(n.abv) : 25)
+            .attr("fill", n => color(n.primary_alcohol))
+            .attr("visibility", n => n.type == "drink" ? "visible" : "hidden");
 
 
-        var lables = node.append("text")
+        var clips = node.append("clipPath")
+            .attr('id', n => "clipping-"+n.id.replace(/[\W_]+/g, '-'))
+            .append("circle")
+            .attr("r", n => n.type == "drink" ? radius * Math.sqrt(n.abv) : 25)
+
+        var images = node.append("image")
+            .attr('opacity', 0.3)
+            .attr('href', "https://www.thecocktaildb.com/images/media/drink/rptuxy1472669372.jpg")
+            .attr('x', n => n.type == "drink" ? -radius * Math.sqrt(n.abv) : -25)
+            .attr('y', n => n.type == "drink" ? -radius * Math.sqrt(n.abv) : -25)
+            .attr('height', n => n.type == "drink" ? 2*radius * Math.sqrt(n.abv) : 25)
+            .attr('width', n => n.type == "drink" ? 2*radius * Math.sqrt(n.abv) : 25)
+            .attr('clip-path', n => "url(#clipping-"+ n.id.replace(/[\W_]+/g, '-') +")")
+            .attr("visibility", n => n.type == "drink" ? "visible" : "hidden");
+
+        var node_text = svg_handle.append("g")
+            .attr("class", "nodes")
+            .selectAll("g")
+            .data(graph_nodes)
+            .enter().append("g").on("click", imageClickfromSVG);
+
+        var lable_shadow = node_text.append("text")
             .text(n => n.id)
-            .attr('x', 6)
-            .attr('y', 3);
+            .attr('text-anchor', "middle")
+            .attr('style', "stroke: white; stroke-width: 4; stroke-linejoin : round; opacity: 0.9;")
+            .attr("visibility", n => n.type == "drink" ? "visible" : "hidden");
+        var lables = node_text.append("text")
+            .text(n => n.id)
+            .attr('text-anchor', "middle")
+            .attr('style', "opacity: 1.0;")
+            .attr("visibility", n => n.type == "drink" ? "visible" : "hidden");
 
-        node.append("title")
-            .text(n => n.id);
-
-        simulation
-            .nodes(recipe_graph.nodes)
+        bubble_simulation
+            .nodes(graph_nodes)
             .on("tick", ticked);
 
-        simulation.force("link")
-            .links(recipe_graph.links);
+        bubble_simulation.force("link")
+            .links(graph_links)
+            .strength(l => l.value); // + (l.source.primary_alchol == l.target.id)
 
         function ticked() {
             link
@@ -89,100 +98,48 @@
                 .attr("y2", l => l.target.y);
             node
                 .attr("transform", n => "translate("+ n.x + "," + n.y + ")");
+            node_text
+                .attr("transform", n => "translate("+ n.x + "," + n.y + ")");
         }
 
-
-        // drag
-        function dragstarted(d) {
-            if (!d.active) simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-        }
-        function dragged(d) {
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
-        }
-        function dragended(d) {
-            if (!d.event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-        }
-        var drag_handler = d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended);
-        drag_handler(node);
-    }
-
-    function fetchIBADataset(){
-        var recipe_data_url = "https://raw.githubusercontent.com/teijo/iba-cocktails/master/recipes.json";
-        var ingredient_data_url = "https://raw.githubusercontent.com/teijo/iba-cocktails/master/ingredients.json";
+        bubble_simulation.force("collision", d3.forceCollide(n => n.type == "drink" ? radius * Math.sqrt(n.abv) : 0).iterations(1));
 
 
-        var recipe_promise = d3.json(recipe_data_url)
-        .then(data => {
-            recipe_data = data;
-            parseRecipeGraph();
-        });
-        var ingredient_promise = d3.json(ingredient_data_url)
-        .then(data => {
-            ingredient_data = data;
+        bubble_simulation.on('end', () => {
+            bubble_simulation.on('end',null);
+            console.log('First simulation done');
+
+            bubble_simulation.force("collision", d3.forceCollide(n => n.type == "drink" ? 1+radius * Math.sqrt(n.abv) : 0).iterations(2));
+
+            /*
+            graph_nodes.forEach(n => {
+                n.x = Math.max(0, Math.min(width, n.x));
+                n.y = Math.max(0, Math.min(height, n.y));
+            });
+            */
+
+            bubble_simulation.alpha(0.3).restart();
+
+            bubble_simulation.on('end', () => {
+                bubble_simulation.on('end',null);
+                bubble_simulation.alpha(0.3).restart();
+            });
         });
 
-        return Promise.allSettled([recipe_promise, ingredient_promise]);
     }
 
-    function parseRecipeGraph(){
-        recipe_graph = {
-            // Extract the drinks and ingredients, remove undefined special items, then sort for de-duping
-            nodes: recipe_data.flatMap(drink =>
-                [{id:drink.name, type: 'drink'}].concat(
-                    drink.ingredients.map(ingredient =>
-                        ({id: ingredient.ingredient, type: 'ingredient'})
-            )))
-                .filter(item => item.id !== undefined)
-                .sort((a,b) => a.id < b.id ? -1 : 1)
-                .filter((item, pos, arr) => !pos || item.id != arr[pos - 1].id),
-            // Extract the links from drinks to ingredients with amounts as the weight.
-            links: recipe_data.flatMap(drink =>
-                drink.ingredients.flatMap(ingredient =>
-                    ({source: drink.name, target: ingredient.ingredient, value: ingredient.amount})
-            ))
-                .filter(item => item.source !== undefined && item.target !== undefined)
-        }
+    function setGraph(data){
+        graph_links = data.links
+        graph_nodes = data.nodes
+        bubble_layout_graph()
     }
 
-    function filterOnlyAlcohol(){
-        recipe_graph.nodes = recipe_graph.nodes.filter(item => item.type != 'ingredient' || ingredient_data[item.id].abv > 0);
-        recipe_graph.links = recipe_graph.links.filter(item => ingredient_data[item.target].abv > 0);
-    }
+    onMount(async () => {
+		 CurrentGraph.subscribe((data) => setGraph(data))
+	});
+
 
 </script>
-<svg >
-
-</svg>
 <main>
-
-    <div style="width:100%;height:100%;">
-<!--        <svg align="center" preserveAspectRatio="xMidYMid" viewBox='-50 -50 125 125' bind:this={svg} height="100%" width="100%" id="main-img"></svg>-->
-        <br>
-    </div>
-
+    <svg class="bubbles" width="100%" height="80vh" bind:this={el}></svg>
 </main>
-
-<style>
-	main {
-		height: 100%;
-	}
-
-
-	circle {
-		fill: black;
-		fill-opacity: 0.5;
-	}
-	.links line {
-	stroke: #999;
-	stroke-opacity: 0.6;
-}
-
-</style>

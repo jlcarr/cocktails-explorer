@@ -54,8 +54,8 @@
 	<div class="col-span-12 w-full">
 		<SearchBar/>
 	</div>
-	<div class="bg-blue-100 col-span-8">
-<!--		<HomeViz/>-->
+	<div class="col-span-8">
+		<HomeViz/>
 	</div>
 	<div class="col-span-4 h-full flex">
 		<PreviewCard
