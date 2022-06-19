@@ -65,8 +65,8 @@ function bubbleLayoutGraph(){
 		.data(bubble_graph.nodes)
 		.enter().append("g")
 		.attr("opacity", 1.0)
-		//.on("mouseover", mouseover)
-		//.on("mouseout", mouseout);
+		.on("mouseover", mouseover)
+		.on("mouseout", mouseout);
 
 	var circles = node.append("circle")
 		.attr("r", n => n.type == "drink" ? radius * Math.sqrt(n.abv) : 25)
@@ -94,8 +94,8 @@ function bubbleLayoutGraph(){
 		.data(bubble_graph.nodes)
 		.enter().append("g")
 		.attr("opacity", 1.0)
-		//.on("mouseover", mouseover)
-		//.on("mouseout", mouseout);
+		.on("mouseover", mouseover)
+		.on("mouseout", mouseout);
 
 	var lable_shadow = node_text.append("text")
 		.text(n => n.id)
@@ -181,25 +181,25 @@ function similarityOpacity(recipe_name){
 	
 	d3.select("g.nodes")
 		.selectAll("g")
-		//.transition()
-		//.duration(500)
-		.attr("opacity", n => !!recipe_similarity_map[n.id] ? recipe_similarity_map[n.id] : 0);
+		.transition()
+		.duration(500)
+		.attr("opacity", n => !!recipe_similarity_map[n.id] ? recipe_similarity_map[n.id] * 0.8 + 0.2 : 0.2);
 	d3.select("g.nodes-text")
 		.selectAll("g")
-		//.transition()
-		//.duration(500)
+		.transition()
+		.duration(500)
 		.attr("opacity", n => !!recipe_similarity_map[n.id] ? recipe_similarity_map[n.id] : 0);
 }
 
 function resetOpacity(){
 	d3.select("g.nodes")
 		.selectAll("g")
-		//.transition()
-		//.duration(500)
+		.transition()
+		.duration(500)
 		.attr("opacity", 1.0);
 	d3.select("g.nodes-text")
 		.selectAll("g")
-		//.transition()
-		//.duration(500)
+		.transition()
+		.duration(500)
 		.attr("opacity", 1.0);
 }
