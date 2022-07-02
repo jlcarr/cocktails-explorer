@@ -4,63 +4,19 @@ function convertNameToUID(name) {
     return name.toLowerCase()
 }
 
-function convertDataIngredientsToArrayWith(object) {
-    // converts the returned drink data from the API into 2 arrays. First being the ordered ingredients the second
-    // being the ingredients with the needed qty. To be passed in to the preview card to build how-to.
-
-    var ingredients = Object.keys(object)
-        .filter(key => key.includes("Ingredient"))
-        .filter(key => !!object[key])
-        .map(ingredient_key => object[ingredient_key]);
-
-    var filtered_measures = Object.keys(object)
-        .filter(key => key.includes("Measure"))
-        .filter(key => !!object[key])
-        .map(measure => object[measure]);
-
-    var how_to = []
-    ingredients.forEach(function(value, i) {
-        if (filtered_measures[i]) {
-            how_to.push(filtered_measures[i] + " of " + value)
-        } else {
-            how_to.push(value)
-        }
-    });
-    return [ingredients, how_to]
+function preprocessData(){
+	recipe_index_map = parseIndexMap(cocktail_data.recipes, recipe => recipe.name);
+	ingredient_index_map = parseIndexMap(cocktail_data.ingredients, ingredient => ingredient.name);
+	top_alcoholic_ingredients = cocktail_data
+		.ingredients.filter(ingredient => ingredient.abv > 0)
+		.sort((a,b) => a.insights.recipe_usage.length < b.insights.recipe_usage.length ? 1 : -1)
+		.map(ingredient => ingredient.name);
 }
 
 
-export async function getPreviewData(name) {
-    var current_preview_item = {}
-    current_preview_item.image_path = ""
-    current_preview_item.current_description = ""
-    current_preview_item.item_name = ""
-    current_preview_item.internal_path_name = ""
-    current_preview_item.array_ingredients = []
-    current_preview_item.instructions = []
-    current_preview_item.array_tags = []
-    let response = await fetch("https://www.thecocktaildb.com/api/json/v1/1/search.php?" + new URLSearchParams({
-        s: name
-    }))
-    var data = await response.json()
-    if (!data) {
-        return
-    }
-    var drink = data.drinks[0]
-    current_preview_item.image_path = drink.strDrinkThumb
-    current_preview_item.current_description = ""
-    current_preview_item.item_name = name
-    current_preview_item.internal_path_name = convertNameToUID(name)
-    current_preview_item.array_ingredients = convertDataIngredientsToArrayWith(drink)
-    if (drink.strTags) {
-        current_preview_item.array_tags = drink.strTags.split(',')
-    } else {
-        current_preview_item.array_tags = []
-    }
-    if (drink.strInstructions){
-        current_preview_item.instructions = drink.strInstructions.split('.').filter(sen => !!sen)
-    }
-
-    current_preview_item.is_visible = true
-    return current_preview_item
+export function parseIndexMap(arr, key_func){
+	var result = {};
+	for (var i = 0; i < arr.length; i++)
+		result[key_func(arr[i])] = i;
+	return result;
 }

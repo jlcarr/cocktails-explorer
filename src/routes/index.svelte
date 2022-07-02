@@ -1,42 +1,48 @@
 <script >
-	import {CurrentSearchTerm} from '/src/stores'
 	import { onMount } from "svelte";
 	import HomeViz from '/src/components/home_viz.svelte';
 	import SearchBar from '/src/components/search_bar.svelte';
 	import PreviewCard from '/src/components/preview_card.svelte';
-	import {getPreviewData} from '/src/routes/app.js';
-	let current_preview_item;
-	let ingredients = ['Vesper', 'Bacardi', 'Negroni', 'Rose', 'Old Fashioned', 'Tuxedo', 'Mojito', "Horse's Neck", "Planter's Punch", 'Sea Breeze', 'Pisco Sour', 'Long Island Iced Tea', 'Clover Club', 'Angel Face', 'Mimosa', 'Whiskey Sour', 'Screwdriver', 'Cuba Libre', 'Manhattan', 'Porto Flip', 'Gin Fizz', 'Espresso Martini', 'Margarita', 'French 75', 'Yellow Bird', 'Pina Colada', 'Aviation', 'Bellini', 'Grasshopper', 'Tequila Sunrise', 'Daiquiri', 'Rusty Nail', 'B52', 'Stinger', 'Golden Dream', 'God Mother', 'Spritz Veneziano', 'Bramble', 'Alexander', 'Lemon Drop Martini', 'French Martini', 'Black Russian', 'Bloody Mary', 'Mai-tai', 'Barracuda', 'Sex on the Beach', 'Monkey Gland', 'Derby', 'Sidecar', 'Irish Coffee', 'Sazerac', 'Americano', 'Singapore Sling', 'French Connection', 'Moscow Mule', 'John Collins', 'Kir', 'Mint Julep', "Tommy's Margarita", 'Paradise', 'Dirty Martini', 'Champagne Cocktail', 'Mary Pickford', 'Hemingway Special', "Dark 'n' Stormy", 'Ramos Fizz', 'Russian Spring Punch', 'GodFather', 'Cosmopolitan', 'Dry Martini', 'Between the Sheets', 'Casino', 'Caipirinha', 'Vampiro', 'Kamikaze', 'White Lady', 'Harvey Wallbanger']
+	import {CocktailInsights} from '/src/stores'
+	import {CurrentSearchTerm} from '/src/stores'
+	import {parseIndexMap} from '/src/routes/app.js';
 
+	let current_preview_item;
+	let ingredients;
+
+	var drinkDataSet;
 	CurrentSearchTerm.subscribe((data) => swapPreview(data))
+	CocktailInsights.subscribe((data) => drinkDataSet = data)
 
 	let current_description;
 	let item_name;
 	let internal_path_name;
 	let image_path;
-	let is_visible = true
 	let list_ingredients;
-	let tags;
+	let special_ingredients;
 	let instructions;
+	let similar_drinks;
+	let volume;
 
 
 	onMount(async () => {
 		 swapPreview(current_preview_item)
+		 ingredients = drinkDataSet.filter(i => i.name)
 	});
 
-	function swapPreview(preview_name){
-	  getPreviewData(preview_name).then(function(data){
-		image_path = data.image_path
-		current_description = data.current_description
-		item_name = data.item_name
-		internal_path_name = data.internal_path_name
-		list_ingredients = data.array_ingredients
-		tags = data.array_tags
-		is_visible = data.is_visible
-		instructions = data.instructions
-		})
+	 function swapPreview(preview_name){
+		setTimeout(function(){
+    		var recipe_index_map = parseIndexMap(drinkDataSet.recipes, recipe => recipe.name);
+    		var drink = drinkDataSet.recipes[recipe_index_map[preview_name]];
+    		item_name = drink.name
+    		volume = drink.volume
+    		list_ingredients = drink.ingredients
+    		instructions = drink.preparation.split(".").filter(step => !!step)
+    		special_ingredients = drink.special_ingredients
+    		image_path = drink.image_url
+    		similar_drinks = drink.insights.similar_recipes.slice(0,5)
+		}, 300);
 	}
-
 
 	function changeCurrentItem(new_name){
 		swapPreview(new_name)
@@ -59,13 +65,14 @@
 	</div>
 	<div class="col-span-4 h-full flex">
 		<PreviewCard
-				{current_description}
 				{item_name}
 				{internal_path_name}
 				{image_path}
 				{list_ingredients}
 				{instructions}
-				{tags}
+				{special_ingredients}
+				{volume}
+				{similar_drinks}
 		/>
 	</div>
 </div>

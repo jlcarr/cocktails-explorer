@@ -3,6 +3,12 @@
     import * as d3 from 'd3';
     import {CurrentGraph} from '../stores'
     import {CurrentSearchTerm} from '../stores'
+    import {CocktailInsights} from '../stores'
+    import {parseIndexMap} from '/src/routes/app.js';
+
+
+    var cocktail_data;
+    var recipe_index_map = null;
 
     export let graph_links = []
     export let graph_nodes = []
@@ -16,11 +22,41 @@
     // alcohol_colors.hasOwnProperty(n.primary_alcohol) ? alcohol_colors[n.primary_alcohol] : 'lightblue'
     var color = d3.scaleOrdinal(d3.schemePaired);
 
+    function similarityOpacity(recipe_name){
+        var recipe = cocktail_data.recipes[recipe_index_map[recipe_name]];
+        var recipe_similarity_map = {};
+        recipe_similarity_map[recipe_name] = 1.0;
+        recipe.insights.similar_recipes.forEach( other_recipe => {
+            recipe_similarity_map[other_recipe.name] = other_recipe.similarity;
+        });
+
+        d3.select("g.nodes")
+            .selectAll("g")
+            .attr("opacity", n => !!recipe_similarity_map[n.id] ? recipe_similarity_map[n.id] : .10);
+        d3.select("g.nodes-text")
+            .selectAll("g")
+            .attr("opacity", n => !!recipe_similarity_map[n.id] ? recipe_similarity_map[n.id] : 0);
+    }
+
+    function resetOpacity(){
+        d3.select("g.nodes")
+            .selectAll("g")
+            .attr("opacity", 1.0);
+        d3.select("g.nodes-text")
+            .selectAll("g")
+            .attr("opacity", 1.0);
+    }
 
     function imageClickfromSVG(e){CurrentSearchTerm.update(n => e.id)}
 
-    function swapCursor(type){
-        d3.select(el).style("cursor", type);
+    function setPointer(e){
+        d3.select(el).style("cursor", 'pointer');
+        similarityOpacity(e.id)
+    }
+
+     function setRegular(e, type){
+        d3.select(el).style("cursor", 'default');
+        resetOpacity()
     }
 
     function bubble_layout_graph(){
@@ -49,8 +85,8 @@
             .enter()
             .append("g")
             .on("click", imageClickfromSVG)
-            .on("mouseover", function(d){swapCursor('pointer')})
-            .on("mouseout", function(d){swapCursor('default')})
+            .on("mouseover", function(d){setPointer(d)})
+            .on("mouseout", function(d){setRegular(d)})
 
 
         var circles = node.append("circle")
@@ -75,13 +111,13 @@
             .attr("visibility", n => n.type == "drink" ? "visible" : "hidden");
 
         var node_text = svg_handle.append("g")
-            .attr("class", "nodes")
+            .attr("class", "nodes-text")
             .selectAll("g")
             .data(graph_nodes)
             .enter().append("g")
             .on("click", imageClickfromSVG)
-            .on("mouseover", function(d){swapCursor('pointer')})
-            .on("mouseout", function(d){swapCursor('default')});
+            .on("mouseover", function(d){setPointer(d)})
+            .on("mouseout", function(d){setRegular(d)})
 
         var lable_shadow = node_text.append("text")
             .text(n => n.id)
@@ -148,6 +184,8 @@
 
     onMount(async () => {
 		 CurrentGraph.subscribe((data) => setGraph(data))
+		 CocktailInsights.subscribe((data) => cocktail_data = data)
+		 recipe_index_map = parseIndexMap(cocktail_data.recipes, recipe => recipe.name);
 	});
 
 
