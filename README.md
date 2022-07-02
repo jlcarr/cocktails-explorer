@@ -7,37 +7,33 @@ The idea was to preprocess the data, and do all the fun computations in the Jupy
 #### Recipes
 ```
 [
-	{
-		"name": string,
-		"ingredients":
-			[
-				{
-					"name": string,
-					"amount": float
-				}
-			],
-		"special_ingredients":
-			[
-				string
-			],
-		"volume": float,
-		"garnish": string,
-		"glass": string,
-		"preparation": string,
-		"image_url": string,
-		"insights":
-			{
-				"abv": float,
-				"primary_alcohol": string,
-				"similar_recipes":
-					[
-						{
-							"name": string,
-							"similarity": float,
-						}
-					]
-			}
-	}
+   {
+      "name":"string",
+      "ingredients":[
+         {
+            "name":"string",
+            "amount":"float"
+         }
+      ],
+      "special_ingredients":[
+         "string"
+      ],
+      "volume":"float",
+      "garnish":"string",
+      "glass":"string",
+      "preparation":"string",
+      "image_url":"string",
+      "insights":{
+         "abv":"float",
+         "primary_alcohol":"string",
+         "similar_recipes":[
+            {
+               "name":"string",
+               "similarity":"float"
+            }
+         ]
+      }
+   }
 ]
 ```
 
@@ -49,28 +45,25 @@ The idea was to preprocess the data, and do all the fun computations in the Jupy
 #### Ingredients
 ```
 [
-	{
-		"name": string,
-		"abv": float,
-		"image_url": string,
-		"insights":
-			{
-				"recipe_usage":
-					[
-						{
-							"name": string,
-							"amount": float
-						}
-					],
-				"paired_ingredients":
-					[
-						{
-							"name": string,
-							"number_recipes" int
-						}
-					]
-			}
-	}
+   {
+      "name":"string",
+      "abv":"float",
+      "image_url":"string",
+      "insights":{
+         "recipe_usage":[
+            {
+               "name":"string",
+               "amount":"float"
+            }
+         ],
+         "paired_ingredients":[
+            {
+               "name":"string",
+               "number_recipes""int"
+            }
+         ]
+      }
+   }
 ]
 ```
 
