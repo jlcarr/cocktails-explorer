@@ -167,6 +167,16 @@ function bubbleLayoutGraph(){
 			bubble_simulation.alpha(0.3).restart();
 		});
 	});
+	
+	
+	// Zoom
+	var zoom = d3.zoom()
+		.scaleExtent([0.125, 2])
+		.on('zoom', function() {
+			d3.selectAll('svg > g')
+				.attr('transform', d3.event.transform);
+		});
+	svg_handle.call(zoom);
 
 }
 
@@ -203,3 +213,4 @@ function resetOpacity(){
 		.duration(500)
 		.attr("opacity", 1.0);
 }
+
