@@ -24,7 +24,7 @@
         <img alt="selected_item" class="object-cover w-20 h-20 border-2 border-blue-500 rounded-full dark:border-blue-400" src={image_path}>
     </div>
 
-    <h2 class="mt-2 mb-3 font-semibold text-gray-800 dark:text-white md:mt-0">{item_name}</h2>
+    <h2 class="mt-2 mb-3 font-semibold text-gray-800 dark:text-white md:mt-0">{item_name} <span><a href="https://en.wikipedia.org/wiki/{item_name}_(cocktail)" target="_blank"><img class=inline width="25px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Wikipedia_svg_logo.svg/200px-Wikipedia_svg_logo.svg.png?20110519202531"></a></span> </h2>
     <div class="break-words">
     <div style="height:50px;overflow-y:auto">
     <small>Similar to...</small>
