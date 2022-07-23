@@ -4,7 +4,6 @@
     import {CurrentSearchTerm} from '../stores'
 
     export let item_name;
-    export let internal_path_name
     export let image_path
     export let list_ingredients = []
     export let special_ingredients = []
@@ -13,7 +12,6 @@
     export let similar_drinks = []
 
 	let preview_name
-
 	function handleRecommendedItemClick(e){
 	    CurrentSearchTerm.update(val => e.path[0].id)
 	}
@@ -46,7 +44,7 @@
             {#each list_ingredients as ingredient}
             <li class="w-full truncate px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-gray-600">
                 <div class="flex">
-                <img class="flex-none w-6 h-full" src="https://www.thecocktaildb.com/images/ingredients/{ingredient.name}-small.png"/>
+                <img alt="image of ingredient '{ingredient.name}'" class="flex-none w-6 h-full" src="https://www.thecocktaildb.com/images/ingredients/{ingredient.name}-small.png"/>
                 <span class="ml-2 truncate">
                     {ingredient.amount} of {ingredient.name}
                 </span>
