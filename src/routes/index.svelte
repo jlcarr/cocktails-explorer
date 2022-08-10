@@ -16,7 +16,6 @@
 
 	let current_description;
 	let item_name;
-	let internal_path_name;
 	let image_path;
 	let list_ingredients;
 	let special_ingredients;
@@ -66,7 +65,6 @@
 	<div class="col-span-4 h-full flex">
 		<PreviewCard
 				{item_name}
-				{internal_path_name}
 				{image_path}
 				{list_ingredients}
 				{instructions}

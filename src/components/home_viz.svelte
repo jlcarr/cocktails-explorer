@@ -1,7 +1,6 @@
 <script>
     import { onMount } from 'svelte';
     import * as d3 from 'd3';
-    import {CurrentGraph} from '../stores'
     import {CurrentSearchTerm} from '../stores'
     import {CocktailInsights} from '../stores'
     import {parseIndexMap} from '/src/routes/app.js';
@@ -21,6 +20,13 @@
     // alcohol_colors = {'Gin':'red', 'Vodka':'blue', 'Whiskey':'yellow', 'White rum':'green', 'Triple Sec': 'orange', 'Tequila':'brown', 'Cognac':'violet'};
     // alcohol_colors.hasOwnProperty(n.primary_alcohol) ? alcohol_colors[n.primary_alcohol] : 'lightblue'
     var color = d3.scaleOrdinal(d3.schemePaired);
+
+    var zoom = d3.zoom()
+    .scaleExtent([0.125, 2])
+    .on('zoom', function() {
+        d3.selectAll('svg > g')
+            .attr('transform', d3.event.transform);
+    });
 
     function similarityOpacity(recipe_name){
         var recipe = cocktail_data.recipes[recipe_index_map[recipe_name]];
@@ -61,13 +67,28 @@
 
     function bubble_layout_graph(){
         var svg_handle = d3.select(el)
+        zoom.scaleBy(svg_handle.transition().duration(2000), 0.4);
 
-        var width = '600'
-        var height =  '600'
+
+        svg_handle.call(zoom);
+
+        d3.select("#zoom_in").on("click", function() {
+            zoom.scaleBy(svg_handle.transition().duration(2000), 2.3);
+        });
+        d3.select("#zoom_out").on("click", function() {
+            zoom.scaleBy(svg_handle.transition().duration(2000), 0.5);
+        });
+
+
+        var width = parseInt(svg_handle.attr("width"))
+        var height = parseInt(svg_handle.attr("height"))
+        var width = 600
+        var height = 600
+
 
         bubble_simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(d => d.id))
-            .force("center", d3.forceCenter(width / 2, height / 2));
+            .force("center", d3.forceCenter(width / 2, height / 1));
 
         // Set up the graph in D3
         var link = svg_handle.append("g")
@@ -79,14 +100,13 @@
             .attr("visibility", "hidden");
 
         var node = svg_handle.append("g")
-            .attr("class", "nodes")
-            .selectAll("g")
-            .data(graph_nodes)
-            .enter()
-            .append("g")
-            .on("click", imageClickfromSVG)
-            .on("mouseover", function(d){setPointer(d)})
-            .on("mouseout", function(d){setRegular(d)})
+		.attr("class", "nodes")
+		.selectAll("g")
+		.data(graph_nodes)
+		.enter().append("g")
+		.attr("opacity", 1.0)
+		.on("mouseover", function(d){setPointer(d)})
+        .on("mouseout", function(d){setRegular(d)})
 
 
         var circles = node.append("circle")
@@ -102,7 +122,7 @@
 
         var images = node.append("image")
             .attr('opacity', 0.3)
-            .attr('href', "https://www.thecocktaildb.com/images/media/drink/rptuxy1472669372.jpg")
+            .attr('href', n => n.img_url)
             .attr('x', n => n.type == "drink" ? -radius * Math.sqrt(n.abv) : -25)
             .attr('y', n => n.type == "drink" ? -radius * Math.sqrt(n.abv) : -25)
             .attr('height', n => n.type == "drink" ? 2*radius * Math.sqrt(n.abv) : 25)
@@ -183,13 +203,61 @@
     }
 
     onMount(async () => {
-		 CurrentGraph.subscribe((data) => setGraph(data))
-		 CocktailInsights.subscribe((data) => cocktail_data = data)
-		 recipe_index_map = parseIndexMap(cocktail_data.recipes, recipe => recipe.name);
+
+
+    CocktailInsights.subscribe((data) => cocktail_data = data)
+	setGraph({
+		// Extract the drinks and ingredients
+		nodes: cocktail_data.recipes.map(recipe =>
+			({
+				id: recipe.name,
+				type: 'drink',
+				img_url: recipe.image_url,
+				abv: recipe.insights.abv,
+				primary_alcohol: recipe.insights.primary_alcohol
+			})
+		).concat(cocktail_data.ingredients.map(ingredient =>
+			({
+				id: ingredient.name,
+				type: 'ingredient',
+				img_url: ingredient.image_url
+			})
+		)),
+		// Extract the links from drinks to ingredients with amounts as the weight.
+		links: cocktail_data.recipes.flatMap(recipe =>
+			recipe.ingredients.map(ingredient =>
+				({
+					source: recipe.name,
+					target: ingredient.name,
+					value: ingredient.amount
+				})
+			)
+		)
+	})
+     recipe_index_map = parseIndexMap(cocktail_data.recipes, recipe => recipe.name);
+
 	});
 
 
 </script>
 <main>
+    <div id="toolbar" class="btn-toolbar">
+    <button class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800" id="zoom_in">Zoom in</button>
+    <button class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800" id="zoom_out">Zoom out</button>
+    </div>
     <svg class="bubbles" width="100%" height="80vh" bind:this={el}></svg>
 </main>
+<style>
+    svg {
+        cursor:grab;
+        display: block;
+        margin: auto;
+    }
+    svg:hover {
+        cursor:grab;
+    }
+
+    .btn-toolbar {
+    float:right;
+    }
+</style>
